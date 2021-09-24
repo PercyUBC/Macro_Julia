@@ -5,3 +5,4 @@ my_vector = [1, 2, 3]
 my_string = "hello"
 my_character = 'o'
 my_boolean = true
+println("Julia is good")
