@@ -6,3 +6,4 @@ my_string = "hello"
 my_character = 'o'
 my_boolean = true
 println("Julia is good")
+println("It's even better than python!")
