@@ -4,17 +4,20 @@ using Plots
 δ = 0.1 
 β = 0.9 
 
+# Capital grid 
 kupper = 2 
 klower = 0.001 
 n = 10 
 kgrid = collect(range(klower, stop = kupper, length = n))
 
-v = zeros(n)
-
+#Iteration parameters 
 tolerance = 0.001
 itermax = 20000
+
+#Initialize values
+vnew = zeros(n)
+v = vnew .+ 2 * tolerance 
 iter = 1 
-vnew = v .+ 2 * tolerance 
 
 while maximum(abs.(v -vnew)) >  tolerance && iter < itermax
     v = vnew
@@ -31,12 +34,13 @@ while maximum(abs.(v -vnew)) >  tolerance && iter < itermax
     iter = iter +1
 end 
 
-kprimeindex = getindex.(cartesianindex, 2)
-kprime = kgrid[kprimeindex]
-
 scatter(kgrid, vnew, title="v(k)")
 
 
+# Policy function
+kprimeindex = getindex.(cartesianindex, 2)
+kprime = kgrid[kprimeindex]
+scatter(kgrid, kprime, title = "k'(k)")
 
 
 
