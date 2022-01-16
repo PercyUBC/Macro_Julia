@@ -1,7 +1,6 @@
-using Random, Distributions, Statistics, Plots, StatsBase
-using StatsBase
-using Printf
+using Random, Distributions, Statistics, Plots, StatsBase, Printf
 
+#Q1 
 function tauchen(ρ, σ, N, m=3)
     dist = Normal(0,1)
     kupper = m * σ / (1 - ρ^2)^(1/2)
@@ -28,7 +27,15 @@ function tauchen(ρ, σ, N, m=3)
     return (state, trans_matrix)
 end
 
+state, mat = tauchen(0.2, 0.4, 3)
+println("Testing my function for Question1")
+println("With Tauchen method, setting ρ=0.2, σ=0.4, N=3, m=3")
+println("The state vector is")
+println(state)
+println("The transition matrix is")
+println(mat)
 
+#Q2
 function rouwenhorst(ρ, σ, N, m=3)
     kupper = m * σ / (1 - ρ^2)^(1/2)
     klower = - m * σ / (1 - ρ^2)^(1/2)
@@ -57,14 +64,20 @@ function rouwenhorst(ρ, σ, N, m=3)
     return state, trans_matrix
 end
 
+state, mat = rouwenhorst(0.2, 0.4, 3)
+println("Testing my function for Question2")
+println("With Rouwenhorst method, setting ρ=0.2, σ=0.4, N=3, m=3")
+println("The state vector is")
+println(state)
+println("The transition matrix is")
+println(mat)
 
-tauchen(0.2, 0.4, 6)[2][2,:]
-rouwenhorst(0.5, 1, 6)[2]
 
 
+#Q3
 function gen_tauchen(ρ, σ, N, t, m=3)
     state, mat = tauchen(ρ, σ, N, m)
-    k_0 = (N - N%2)/2 + 1
+    k_0 = convert(Int64, (N - N%2)/2 + 1)
     y_0 = state[k_0]
     k_path = [k_0]
     y_path=[y_0]
@@ -105,14 +118,16 @@ end
 function percy_summary(d)
     m = mean(d)
     v = var(d)
+    med = median(d)
     auto=autocor(d, [1], demean=true)[1]
     qant_25 = quantile(d, 0.25)
     qant_75 = quantile(d, 0.75)
     println("Mean is $m")
     println("Variance is $v")
+    println("Auto-correlation is $auto")
+    println("Median is $med")
     println("25% quantile is $qant_25")
     println("75% quantile is $qant_75")
-    println("Auto-correlation is $auto")
 end
 
 # Q3 original simulation
@@ -134,12 +149,12 @@ percy_summary(y)
 
 
 # Q4 tauchen simulation
-y=gen_tauchen(0.2, 0.4, 3, 1000)
+y=gen_tauchen(0.2, 0.4, 10, 1000)
 println("For Tauchen simulation")
 percy_summary(y)
 
 # Q4 rouwenhorst simulation
-y=gen_rouwenhorst(0.2, 0.4, 3, 1000)
+y=gen_rouwenhorst(0.2, 0.4, 10, 1000)
 println("For Rouwenhorst simulation")
 percy_summary(y)
 
